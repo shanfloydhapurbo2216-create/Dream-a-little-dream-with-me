@@ -1,0 +1,29 @@
+# OS junk
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/*
+!.vscode/settings.json
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+*.log
+npm-debug.log*
+
+# Node (only if you later add a build step / dev server)
+node_modules/
+package-lock.json
+npm-debug.log*
+.npm
+
+# Temporary / exported files
+*.tmp
+*.bak
+dist/
+build/

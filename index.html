@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream a little dream with me</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <audio id="bg-music">
+        <source src="lagu6.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="petals" id="petals-container"></div>
+
+    <!-- ============ FIXED NAVBAR ============ -->
+    <header class="navbar">
+        <a class="nav-brand" href="#melodies">🤍 <span>A Little Dream of Me (For Suha)</span></a>
+        <nav class="nav-links">
+            <a href="#melodies" class="active">A Little Dream of Me (For Suha)</a>
+            <a href="#quotes">Notes from the Underground, Letters to Suha</a>
+            <a href="#reasons">In Every Version of You</a>
+        </nav>
+    </header>
+
+    <!-- ============ COVER SCREEN ============ -->
+    <div id="cover-screen" onclick="showPopup()">
+        <div class="gift-box" id="gift-icon">🤍</div>
+        <div class="tap-text" id="tap-text">a little surprise, just for you 🤍</div>
+    </div>
+
+    <div id="popup-overlay" class="hidden">
+        <div id="popup-box">
+            <h3 class="serif">Are you sure you want to open your surprise? 🥺</h3>
+            <div class="popup-buttons">
+                <button id="btn-yes" class="popup-btn" onclick="confirmOpenGift()">Yes, of course 🤍</button>
+                <button id="btn-no" class="popup-btn">No, skip it for now 😜</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content">
+
+        <!-- ============ MUSIC WIDGET ============ -->
+        <div class="music-widget">
+            <div class="music-top">
+                <img id="player-cover" src="bg.jpg" alt="Album Art">
+                <div class="music-info">
+                    <span class="title" id="player-title">Only You</span>
+                    <span class="artist" id="player-artist">The Flying Pickets </span>
+                </div>
+            </div>
+
+            <div class="progress-wrapper">
+                <input type="range" id="seek-bar" value="0" min="0" max="100" step="0.1">
+                <div class="time-display">
+                    <span id="current-time">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <span onclick="prevSong()">⏮</span>
+                <span id="play-pause-btn" onclick="toggleMusic()">⏸</span>
+                <span onclick="nextSong()">⏭</span>
+            </div>
+        </div>
+
+        <!-- ============ 1. OUR MELODIES ============ -->
+        <section id="melodies" class="hero-section">
+            <p class="subtitle"> melodies</p>
+            <h1 class="title-main serif">Songs That Sound<br>Like You</h1>
+            <img src="bg.jpg" alt=" Melodies" style="width: 160px; height: 160px; object-fit: cover; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.2); box-shadow: 0 0 25px rgba(229,115,115,0.4); margin-bottom: 25px;">
+            <p class="text-body" style="margin-top:10px;">Every song here holds a moment we never had to explain to each other. Press play, and it all comes back at once.</p>
+            <p class="subtitle" style="margin-top:25px;">click a cover to change the song</p>
+
+            <div class="playlist-grid">
+
+                <div class="photo-item" style="cursor: pointer;" onclick="changeSong('lagu1.mp3', 'Only You', 'The Flying Pickets', 'cover1.jpg')">
+                    <img src="cover1.jpg" alt="Only You" style="filter: none;">
+                    <p class="photo-caption" style="font-size: 14px; margin-top: 10px; color: #fff; font-family: 'Montserrat', sans-serif;">Only You</p>
+                    <p style="font-size: 11px; color: var(--text-muted);">The Flying Pickets</p>
+                </div>
+
+                <div class="photo-item" style="cursor: pointer;" onclick="changeSong('lagu2.mp3', 'Unko Bhi Humse Mohabbat Ho Jaruri To Nahi', 'Soulful Ghazal', 'cover2.jpg')">
+                    <img src="cover2.jpg" alt="Unko Bhi Humse Mohabbat Ho Jaruri To Nahi" style="filter: none;">
+                    <p class="photo-caption" style="font-size: 14px; margin-top: 10px; color: #fff; font-family: 'Montserrat', sans-serif;">Unko Bhi Humse Mohabbat Ho Jaruri To Nahi</p>
+                    <p style="font-size: 11px; color: var(--text-muted);">Soulful Ghazal</p>
+                </div>
+
+                <div class="photo-item" style="cursor: pointer;" onclick="changeSong('lagu3.mp3', 'Cant Help Falling in Love', 'Elvis Presley', 'cover3.jpg')">
+                    <img src="cover3.jpg" alt="Can't Help Falling in Love" style="filter: none;">
+                    <p class="photo-caption" style="font-size: 14px; margin-top: 10px; color: #fff; font-family: 'Montserrat', sans-serif;">Can't Help Falling in Love</p>
+                    <p style="font-size: 11px; color: var(--text-muted);">Elvis Presley</p>
+                </div>
+
+                <div class="photo-item" style="cursor: pointer;" onclick="changeSong('lagu4.mp3', 'Ami Dur Hote Tomarei Dekhechhi', 'Hemanta Mukherjee', 'cover4.jpg')">
+                    <img src="cover4.jpg" alt="Ami Dur Hote Tomarei Dekhechhi" style="filter: none;">
+                    <p class="photo-caption" style="font-size: 14px; margin-top: 10px; color: #fff; font-family: 'Montserrat', sans-serif;">Ami Dur Hote Tomarei Dekhechhi</p>
+                    <p style="font-size: 11px; color: var(--text-muted);">Hemanta Mukherjee</p>
+                </div>
+
+                <div class="photo-item" style="cursor: pointer;" onclick="changeSong('lagu5.mp3', 'All Out Of Love ', 'Air Supply', 'cover5.jpg')">
+                    <img src="cover5.jpg" alt="All Out Of Love " style="filter: none;">
+                    <p class="photo-caption" style="font-size: 14px; margin-top: 10px; color: #fff; font-family: 'Montserrat', sans-serif;">All Out Of Love</p>
+                    <p style="font-size: 11px; color: var(--text-muted);">Air Supply</p>
+                </div>
+
+            </div>
+            <button class="next-btn" onclick="nextSection(this)">🤍</button>
+        </section>
+
+        <!-- ============ 2. QUOTES ============ -->
+        <section id="quotes">
+            <p class="subtitle">from my heart</p>
+            <h2 class="title-sub serif">Words Worth Keeping</h2>
+
+            <div class="quote-stack">
+
+                <div class="quote-box">
+                    <p class="serif quote-text">“Your hand is cold, mine burns like fire. How blind you are, Nastenka!” "</p>
+                    <p class="quote-author">— White Nights by Dostoevsky</p>
+                </div>
+
+                <div class="quote-box">
+                    <p class="serif quote-text">"I have passed by many eyes, but only got lost in yours."</p>
+                    <p class="quote-author">— Mahmoud Darwish</p>
+                </div>
+
+                <div class="quote-box">
+                    <p class="serif quote-text">"We are only human, and the gods have fashioned us for love. That is our great glory, and our great tragedy."</p>
+                    <p class="quote-author">— A Game of Thrones Novel by George R. R. Martin</p>
+                </div>
+
+                <div class="quote-box">
+                    <p class="serif quote-text">"This haphazard world and the messy maze in your heart."</p>
+                    <p class="quote-author">—----------</p>
+                </div>
+
+            </div>
+            <button class="next-btn" onclick="nextSection(this)">🤍</button>
+        </section>
+
+        <!-- ============ 3. In Every Version of You ============ -->
+        <section id="reasons">
+            <p class="subtitle">YOU ARE NOT ONE PERSON TO ME, BUT A THOUSAND QUIET VERSIONS I’D STILL PAUSE FOR, AGAIN AND AGAIN</p>
+            <h2 class="title-sub serif">In Every Version of You</h2>
+            <div class="reasons-grid">
+                <div class="card"><div class="card-icon">✨</div><h3 class="serif">A Glimpse of You</h3><p>It wasn’t long, but it stayed longer than it should.</p></div>
+                <div class="card"><div class="card-icon">🌟</div><h3 class="serif">The Way You Exist</h3><p>Somehow, even silence felt different around you</p></div>
+                <div class="card"><div class="card-icon">💖</div><h3 class="serif">A Passing Moment</h3><p>You passed by—time didn’t</p></div>
+                <div class="card"><div class="card-icon">🎵</div><h3 class="serif">Something About You</h3><p>I couldn’t name it, but I noticed</p></div>
+                <div class="card"><div class="card-icon">💪</div><h3 class="serif">An Unfamiliar Familiarity</h3><p>Like I’d seen you somewhere, just not in this life</p></div>
+                <div class="card"><div class="card-icon">🌸</div><h3 class="serif">You, For a Second</h3><p>And somehow, that second keeps repeating</p></div>
+            </div>
+            <button class="next-btn" onclick="nextSection(this)">🤍</button>
+        </section>
+
+        <!-- ============ CLOSING ============ -->
+        <section id="closing">
+            <div style="font-size: 28px; letter-spacing: 10px; margin-bottom: 20px;">🌸🌹🌺</div>
+            <p class="subtitle">Even from a distance &amp; Honestly</p>
+            <h1 class="title-sub serif">You Are Appreciated<br>Beyond Words</h1>
+            <p class="text-body" style="font-size: 14px; max-width: 600px;">
+                No matter where life takes us, know that somewhere in the universe, a small garden started blooming the moment I saw you — made of the quiet feeling your eyes left behind. You deserve the world. You deserve all the flowers. You deserve everything. 
+            </p>
+            <p class="serif" style="margin-top: 50px; font-style: italic; color: var(--text-muted); font-size:18px;">
+                Written with a feeling I can’t quite put into words 🤍
+            </p>
+            <p class="serif" style="margin-top: 20px; font-weight: 600; color: var(--text-muted); font-size:18px;">
+                JHOLOK
+            </p>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

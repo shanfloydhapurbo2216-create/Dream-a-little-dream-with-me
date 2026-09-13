@@ -1,0 +1,269 @@
+/* ============================================================
+   Interface mirrored from the reference site
+   (palette, fonts, petals, music widget, fade-ins, next buttons)
+   Only additions: fixed navbar + quote boxes + usable scrolling
+   ============================================================ */
+
+:root {
+    --bg-dark: #1f0b17;
+    --bg-card: rgba(255, 255, 255, 0.04);
+    --text-main: #fce4ec;
+    --text-muted: #d4a5b9;
+    --accent: #e57373;
+    --nav-h: 60px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    /* was overflow:hidden in the reference — kept scrollable so the page works
+       with a normal mouse/touch scroll as well as the 🤍 next buttons */
+    scroll-padding-top: var(--nav-h);
+    scroll-snap-type: y proximity;
+}
+
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.85)), url('bgc.jpg') center/cover fixed no-repeat;
+    color: var(--text-main);
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, .serif { font-family: 'Cormorant Garamond', serif; font-weight: normal; }
+
+/* ============================ NAVBAR ============================ */
+.navbar {
+    position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 25px; z-index: 60;
+    background: rgba(15, 5, 10, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(15px);
+    transition: background 0.3s ease;
+}
+.navbar.scrolled { background: rgba(15, 5, 10, 0.88); }
+
+.nav-brand {
+    font-family: 'Cormorant Garamond', serif; font-size: 19px; letter-spacing: 1px;
+    color: #fff; text-decoration: none;
+}
+.nav-brand span { color: var(--text-muted); }
+
+.nav-links { display: flex; align-items: center; gap: 22px; }
+.nav-links a {
+    position: relative; font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-muted); text-decoration: none; padding-bottom: 3px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.nav-links a::after {
+    content: ""; position: absolute; left: 0; bottom: 0; width: 0; height: 1px;
+    background: var(--accent); transition: width 0.35s ease;
+}
+.nav-links a:hover { color: var(--text-main); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: #fff; text-shadow: 0 0 12px rgba(229, 115, 115, 0.6); }
+.nav-links a.active::after { width: 100%; }
+
+/* ============================ COVER SCREEN ============================ */
+#cover-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: var(--bg-dark); display: flex; flex-direction: column;
+    justify-content: center; align-items: center; z-index: 100;
+    transition: opacity 1.5s ease;
+}
+
+.gift-box { font-size: 90px; cursor: pointer; animation: pulse 1.5s infinite; position: relative; z-index: 10; }
+.tap-text { margin-top: 15px; font-size: 11px; color: var(--text-muted); letter-spacing: 3px; text-transform: uppercase; }
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); filter: drop-shadow(0 0 20px rgba(229,115,115,0.4)); }
+    100% { transform: scale(1); }
+}
+
+.burst-flower { position: absolute; font-size: 30px; opacity: 0; pointer-events: none; transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+#popup-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center;
+    z-index: 200; opacity: 0; visibility: hidden; transition: opacity 0.4s ease;
+}
+#popup-overlay.show { opacity: 1; visibility: visible; }
+
+#popup-box {
+    background: var(--bg-dark); border: 2px solid var(--accent); padding: 40px 20px;
+    border-radius: 15px; text-align: center; position: relative; width: 90%; max-width: 450px;
+    min-height: 250px; box-shadow: 0 0 25px rgba(229,115,115,0.4);
+}
+#popup-box h3 { color: #fff; font-size: 26px; margin-bottom: 40px; }
+.popup-buttons { display: flex; justify-content: center; align-items: center; gap: 20px; }
+.popup-btn {
+    padding: 12px 24px; border: none; border-radius: 25px; font-family: 'Montserrat', sans-serif;
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.3s ease;
+}
+#btn-yes { background: var(--accent); color: #fff; }
+#btn-yes:hover { background: #ef9a9a; }
+#btn-no { background: #555; color: #fff; transition: top 0.2s ease, left 0.2s ease, background 0.3s ease; }
+
+/* ============================ PETALS ============================ */
+.petals { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+.petal { position: absolute; background-color: #ffb7c5; border-radius: 50% 0 50% 0; opacity: 0.4; animation: fall linear infinite; }
+@keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 20% { opacity: 0.6; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+#main-content { display: none; opacity: 0; transition: opacity 2s ease; position: relative; z-index: 10; }
+
+/* ============================ SECTIONS ============================ */
+section {
+    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+    padding: 90px 20px 80px;
+    max-width: 680px;
+    margin: 0 auto; position: relative;
+    min-height: 100vh; scroll-snap-align: start;
+}
+.hero-section { justify-content: center; }
+
+.subtitle { font-size: 10px; color: var(--text-muted); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 5px; }
+.title-main { font-size: 38px; margin-bottom: 5px; color: #fff; line-height: 1.1; }
+.title-sub { font-size: 28px; margin-bottom: 5px; color: #fff; }
+.text-body { font-size: 13px; line-height: 1.5; color: #dcdcdc; max-width: 650px; font-weight: 300; }
+
+.hero-section img { width: 100px !important; height: 100px !important; margin-bottom: 10px !important; }
+
+.next-btn {
+    margin-top: 10px; padding: 8px 25px; background: transparent; border: 2px solid var(--accent);
+    color: var(--text-main); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase; border-radius: 25px; cursor: pointer;
+    transition: all 0.3s ease; box-shadow: 0 0 15px rgba(229, 115, 115, 0.2);
+}
+.next-btn:hover { background: var(--accent); color: #fff; box-shadow: 0 0 25px rgba(229, 115, 115, 0.6); transform: translateY(-3px); }
+
+/* ============================ CARDS (section 3) ============================ */
+.reasons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; margin-top: 15px; }
+.card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); padding: 12px 10px; border-radius: 12px; backdrop-filter: blur(10px); transition: all 0.3s ease; text-align: center; }
+.card:hover { transform: translateY(-5px); border-color: rgba(229,115,115,0.3); }
+.card-icon { font-size: 18px; margin-bottom: 5px; }
+.card h3 { font-size: 15px; margin-bottom: 5px; color: #fff; }
+.card p { font-size: 11px; color: #bca0ad; line-height: 1.4; }
+
+/* ============================ QUOTE BOXES (section 2) ============================ */
+.quote-stack { display: flex; flex-direction: column; gap: 14px; width: 100%; margin-top: 20px; }
+.quote-box {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid var(--accent);
+    padding: 22px 28px; border-radius: 0 15px 15px 0;
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    text-align: left;
+    transition: all 0.3s ease;
+}
+.quote-box:hover { transform: translateX(6px); border-left-color: #ef9a9a; box-shadow: 5px 5px 25px rgba(229,115,115,0.25); }
+.quote-text { font-size: 20px; font-style: italic; line-height: 1.6; color: #fff; }
+.quote-author { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-top: 10px; }
+
+/* ============================ PLAYLIST GRID (section 1) ============================ */
+.playlist-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; margin-top: 15px; }
+
+.photo-item { position: relative; cursor: pointer; transition: transform 0.3s; }
+.photo-item:hover { transform: scale(1.05); }
+.photo-item img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; filter: grayscale(100%) sepia(30%) hue-rotate(290deg) brightness(0.8) contrast(1.2); transition: filter 0.5s ease; }
+.photo-item img:hover { filter: grayscale(0%); }
+.photo-caption { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; margin-top: 5px; color: var(--text-muted); }
+
+/* ============================ MUSIC WIDGET ============================ */
+.music-widget {
+    position: fixed; bottom: 20px; left: 20px; background: rgba(15, 5, 10, 0.7); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 15px; padding: 12px; width: 240px; backdrop-filter: blur(15px); z-index: 50; display: flex; flex-direction: column;
+    gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: transform 0.3s;
+}
+.music-widget:hover { transform: translateY(-5px); }
+.music-top { display: flex; align-items: center; gap: 12px; }
+.music-top img { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; }
+.music-info { display: flex; flex-direction: column; gap: 2px; }
+.music-info .title { font-size: 12px; font-weight: 500; color: #fff; }
+.music-info .artist { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; }
+
+.progress-wrapper { width: 100%; margin-top: 3px; }
+.time-display { display: flex; justify-content: space-between; font-size: 9px; color: var(--text-muted); margin-top: 5px; letter-spacing: 1px; }
+#seek-bar { appearance: none; -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; outline: none; cursor: pointer; }
+#seek-bar::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%; background: var(--text-main); box-shadow: 0 0 10px rgba(229,115,115,0.5); transition: transform 0.2s; }
+#seek-bar::-webkit-slider-thumb:hover { transform: scale(1.3); }
+
+.controls { display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 14px; cursor: pointer; color: var(--text-main); }
+.controls span:hover { color: var(--accent); }
+
+/* ============================ FADE-IN ON SCROLL ============================ */
+section > * { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+section.in-view > * { opacity: 1; transform: translateY(0); }
+section.in-view > *:nth-child(1) { transition-delay: 0.1s; }
+section.in-view > *:nth-child(2) { transition-delay: 0.2s; }
+section.in-view > *:nth-child(3) { transition-delay: 0.3s; }
+section.in-view > *:nth-child(4) { transition-delay: 0.4s; }
+section.in-view > *:nth-child(5) { transition-delay: 0.5s; }
+section.in-view > *:nth-child(6) { transition-delay: 0.6s; }
+section.in-view > *:nth-child(7) { transition-delay: 0.7s; }
+
+/* ============================ MOBILE ============================ */
+@media (max-width: 768px) {
+
+    .navbar { height: 52px; padding: 0 14px; }
+    .nav-brand { font-size: 15px; white-space: nowrap; }
+    .nav-links { gap: 12px; }
+    .nav-links a { font-size: 8px; letter-spacing: 1px; white-space: nowrap; }
+
+    :root { --nav-h: 52px; }
+
+    /* On small phones the wordmark is dropped so the three links stay on one line */
+    @media (max-width: 520px) {
+        .nav-brand span { display: none; }
+        .nav-links { gap: 10px; flex: 1; justify-content: space-between; }
+        .nav-links a { font-size: 8.5px; letter-spacing: 1px; }
+    }
+
+    html { scroll-snap-type: none; }   /* snapping fights tall content on phones */
+
+    .music-widget {
+        bottom: 15px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 300px;
+        padding: 10px 15px; border-radius: 12px; gap: 8px;
+    }
+    .music-widget:hover { transform: translate(-50%, -2px); }
+    .music-top { gap: 10px; }
+    .music-top img { width: 35px; height: 35px; }
+    .music-info .title { font-size: 12px; }
+    .music-info .artist { font-size: 9px; }
+    .time-display { font-size: 9px; margin-top: 3px; }
+    .controls { gap: 15px; font-size: 14px; }
+
+    section { padding-bottom: 130px; padding-top: 60px; }
+
+    .title-main { font-size: 30px; margin-bottom: 12px; line-height: 1.1; }
+    .title-sub { font-size: 26px; margin-bottom: 12px; }
+    .text-body { font-size: 11px !important; line-height: 1.5 !important; }
+    .subtitle { font-size: 9px; margin-bottom: 8px; letter-spacing: 3px; }
+    .hero-section img { width: 84px !important; height: 84px !important; margin-bottom: 12px !important; }
+    .hero-section .text-body { max-width: 330px; }
+    .hero-section .subtitle[style] { margin-top: 14px !important; }
+
+    .reasons-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+    .card { padding: 12px 10px; }
+    .card-icon { font-size: 18px; margin-bottom: 5px; }
+    .card h3 { font-size: 12px; margin-bottom: 5px; }
+    .card p { font-size: 9px; line-height: 1.3; }
+
+    .quote-stack { gap: 10px; margin-top: 15px; }
+    .quote-box { padding: 16px 20px; }
+    .quote-text { font-size: 15px; line-height: 1.5; }
+    .quote-author { font-size: 8px; letter-spacing: 2px; margin-top: 8px; }
+
+    .playlist-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+    .playlist-grid .photo-item,
+    .playlist-grid .photo-item:nth-child(5) {
+        width: 28% !important; margin: 0 !important;
+    }
+    .playlist-grid .photo-caption { font-size: 11px !important; margin-top: 6px !important; line-height: 1.2; }
+    .playlist-grid p { font-size: 9px !important; }
+    .next-btn { margin-top: 22px; }
+
+    section div[style*="border-left"] { padding: 15px 20px !important; margin-top: 10px !important; }
+    section div[style*="border-left"] p { font-size: 12px !important; line-height: 1.6 !important; }
+    section p[style*="made with love"] { margin-top: 20px !important; font-size: 14px !important; }
+}
